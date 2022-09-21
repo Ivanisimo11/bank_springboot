@@ -4,6 +4,7 @@ import com.bankapp.entity.Bank;
 import com.bankapp.entity.BankAccount;
 import com.bankapp.service.BankAccountService;
 import com.bankapp.service.BankService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,13 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/bank")
 public class BankController {
-    private final BankService bankService;
-    private final BankAccountService bankAccountService;
+    @Autowired
+    private BankService bankService;
+    @Autowired
+    private BankAccountService bankAccountService;
 
-    public BankController(BankService bankService, BankAccountService bankAccountService) {
-        this.bankService = bankService;
-        this.bankAccountService = bankAccountService;
-    }
 
     @GetMapping("/list")
     public List<Bank> list() {

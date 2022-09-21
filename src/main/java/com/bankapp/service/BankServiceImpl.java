@@ -2,16 +2,16 @@ package com.bankapp.service;
 
 import com.bankapp.dao.BankDAO;
 import com.bankapp.entity.Bank;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class BankServiceImpl implements BankService {
-    private final BankDAO bankDAO;
-    public BankServiceImpl(BankDAO bankDAO) {
-        this.bankDAO = bankDAO;
-    }
+    @Autowired
+    private BankDAO bankDAO;
+
 
     @Override
     public List<Bank> getAllBanks() {

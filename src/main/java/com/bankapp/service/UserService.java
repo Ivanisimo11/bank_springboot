@@ -10,4 +10,9 @@ public interface UserService {
     public User getUser(String username);
 
     public boolean addUser(User user);
+
+    public User getProfileInfo(String username);
+
+    public boolean updateUser(String username, User user);
+
 }

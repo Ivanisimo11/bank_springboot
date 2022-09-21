@@ -4,6 +4,7 @@ import com.bankapp.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
@@ -17,16 +18,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
     private final String SECRET = "ivan228";
 
-
-    public AuthService(UserService userService) {
-        this.userService = userService;
-    }
 
     public Claims validateToken(HttpServletRequest request) {
         String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");

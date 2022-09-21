@@ -2,6 +2,7 @@ package com.bankapp.configuration;
 
 import com.bankapp.filter.JWTAuthorizationFilter;
 import com.bankapp.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,12 +11,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 public class BankSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final AuthService authService;
-
-    public BankSecurityConfig(AuthService authService) {
-        this.authService = authService;
-    }
+    @Autowired
+    private AuthService authService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
