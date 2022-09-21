@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bankapp.service.JwtTokenService;
+import com.bankapp.service.AuthService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,17 +21,18 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
-    private final JwtTokenService jwtTokenService;
+    private final AuthService authService;
 
-    public JWTAuthorizationFilter(JwtTokenService jwtTokenService) {
-        this.jwtTokenService = jwtTokenService;
+    public JWTAuthorizationFilter(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
         try {
-            if (jwtTokenService.checkJWTToken(request, response)) {
-                Claims claims = jwtTokenService.validateToken(request);
+            if (authService.checkJWTToken(request, response)) {
+                Claims claims = authService.validateToken(request);
                 if (claims.get("authorities") != null) {
                     setUpSpringAuthentication(claims);
                 } else {

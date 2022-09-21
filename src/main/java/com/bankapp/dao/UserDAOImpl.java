@@ -7,8 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserDAOImpl implements UserDAO{
-    private final List<User> users = new ArrayList<>();
+public class UserDAOImpl implements UserDAO {
+    private final List<User> users;
+
+    public UserDAOImpl() {
+        users = new ArrayList<>();
+        User user = new User();
+        user.setUsername("admin");
+        user.setPassword("admin");
+        users.add(user);
+    }
 
     @Override
     public List<User> getAllUsers() {
