@@ -59,10 +59,12 @@ public class AuthService {
     }
 
     public User auth(User user) throws AuthException {
+        int id = user.getId();
         String username = user.getUsername();
         String password = user.getPassword();
-        String token = getJWTToken(username);
-        if (userService.getUser(username) != null && userService.getUser(username).getPassword().equals(password)){
+        if (userService.getUser(id) != null && userService.getUser(id).getPassword().equals(password)
+                && userService.getUser(id).getUsername().equals(username)){
+            String token = getJWTToken(username);
             User newUser = new User();
             newUser.setUsername(username);
             newUser.setToken(token);

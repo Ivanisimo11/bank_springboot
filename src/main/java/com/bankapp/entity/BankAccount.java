@@ -1,6 +1,11 @@
 package com.bankapp.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class BankAccount {
+    @Id
     private int id;
     private int balance;
     private int bankId;

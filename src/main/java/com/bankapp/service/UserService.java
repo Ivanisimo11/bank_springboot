@@ -7,12 +7,8 @@ import java.util.List;
 public interface UserService {
     public List<User> getAllUsers();
 
-    public User getUser(String username);
+    public User getUser(int id);
 
-    public boolean addUser(User user);
-
-    public User getProfileInfo(String username);
-
-    public boolean updateUser(String username, User user);
+    public void addOrUpdateUser(User user);
 
 }

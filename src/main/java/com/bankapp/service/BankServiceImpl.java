@@ -22,4 +22,9 @@ public class BankServiceImpl implements BankService {
     public Bank getBank(int id) {
         return bankDAO.getBank(id);
     }
+
+    @Override
+    public void addBank(Bank bank) {
+        bankDAO.addBank(bank);
+    }
 }

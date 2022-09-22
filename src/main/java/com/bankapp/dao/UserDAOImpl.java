@@ -1,66 +1,38 @@
 package com.bankapp.dao;
 
 import com.bankapp.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-    private final List<User> users;
-
-    public UserDAOImpl() {
-        users = new ArrayList<>();
-        User user = new User();
-        user.setUsername("admin");
-        user.setPassword("admin");
-        user.setBirthdate(new Date(2002, 12, 20));
-        user.setEmail("admin@gmail.com");
-        user.setLastName("admin");
-        user.setFirstName("admin");
-        users.add(user);
-    }
+    private final Logger logger= Logger.getLogger("UserDAOImpl");
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<User> getAllUsers() {
-        return users;
+        logger.log(Level.INFO, "getAllUsers()");
+        return mongoTemplate.findAll(User.class);
     }
 
     @Override
-    public User getUser(String username) {
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-
-    @Override
-    public boolean addUser(User user) {
-        return users.add(user);
+    public User getUser(int id) {
+        logger.log(Level.INFO, "getUser(" + id + ")");
+        BasicQuery query = new BasicQuery("{ _id: " + id + " }");
+        return mongoTemplate.findOne(query, User.class);
     }
 
     @Override
-    public User getProfileInfo(String username) {
-        User user = new User();
-        User tempUser = getUser(username);
-        user.setFirstName(tempUser.getFirstName());
-        user.setLastName(tempUser.getLastName());
-        user.setEmail(tempUser.getEmail());
-        user.setBirthdate(tempUser.getBirthdate());
-        return user;
+    public void addOrUpdateUser(User user) {
+        logger.log(Level.INFO, "addOrUpdateUser(" + user.toString() + ")");
+        mongoTemplate.save(user);
     }
 
-    @Override
-    public boolean updateUser(String username, User user) {
-        user.setPassword(getUser(username).getPassword());
-        user.setUsername(getUser(username).getUsername());
-        user.setToken(getUser(username).getToken());
-        users.remove(getUser(username));
-        return users.add(user);
-    }
 }

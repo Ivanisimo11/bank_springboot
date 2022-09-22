@@ -1,32 +1,37 @@
 package com.bankapp.dao;
 
 import com.bankapp.entity.Bank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Repository;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Repository
 public class BankDAOImpl implements BankDAO {
-    private final List<Bank> banks;
-    public BankDAOImpl() {
-        List<Bank> temp = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            temp.add(new Bank(i,"Bank № " + i));
-        }
-        banks = Collections.unmodifiableList(temp);
-    }
+    private final Logger logger= Logger.getLogger("BankDAOImpl");
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<Bank> getAllBanks() {
-        return banks;
+        logger.log(Level.INFO,"getAllBanks()");
+        return mongoTemplate.findAll(Bank.class);
     }
 
     @Override
     public Bank getBank(int id) {
-        return banks.get(id);
+        logger.log(Level.INFO,"getBank(" + id + ")");
+        BasicQuery query = new BasicQuery("{ _id: " + id + " }");
+        return mongoTemplate.findOne(query, Bank.class);
     }
 
-
+    @Override
+    public void addBank(Bank bank) {
+        logger.log(Level.INFO,"addBank(" + bank.toString() + ")");
+        mongoTemplate.save(bank);
+    }
 }

@@ -18,22 +18,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String username) {
-        return userDAO.getUser(username);
+    public User getUser(int id) {
+        return userDAO.getUser(id);
     }
 
     @Override
-    public boolean addUser(User user) {
-        return userDAO.addUser(user);
-    }
-
-    @Override
-    public User getProfileInfo(String username) {
-        return userDAO.getProfileInfo(username);
-    }
-
-    @Override
-    public boolean updateUser(String username, User user) {
-        return userDAO.updateUser(username,user);
+    public void addOrUpdateUser(User user) {
+        userDAO.addOrUpdateUser(user);
     }
 }

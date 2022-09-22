@@ -1,31 +1,24 @@
 package com.bankapp.dao;
 
 import com.bankapp.entity.BankAccount;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Repository;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Repository
 public class BankAccountDAOImpl implements BankAccountDAO {
-    private final List<BankAccount> bankAccounts;
-
-    public BankAccountDAOImpl() {
-        List<BankAccount> temp = new ArrayList<>();
-        for (int i = 0; i < 125; i++) {
-            temp.add(new BankAccount(i, i * 50, i % 20));
-        }
-        bankAccounts = Collections.unmodifiableList(temp);
-    }
+    private final Logger logger= Logger.getLogger("BankAccountDAOImpl");
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<BankAccount> getBanksAccountByBankId(int id) {
-        List<BankAccount> bankAccountList = new ArrayList<>();
-        for (BankAccount bankAccount : bankAccounts) {
-            if (bankAccount.getBankId() == id) {
-                bankAccountList.add(bankAccount);
-            }
-        }
-        return bankAccountList;
+        logger.log(Level.INFO,"getBanksAccountByBankId(" + id + ")");
+        BasicQuery query = new BasicQuery("{ bankId: " + id + " }");
+        return mongoTemplate.find(query, BankAccount.class);
     }
 }
